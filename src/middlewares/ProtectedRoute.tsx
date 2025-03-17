@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "./IsAuthenticated";
 import { useAppDispatch } from "@/redux/hook";
-import { setUserData } from "@/redux/reducers/userSlice";
+import { setCurrentUserData } from "@/redux/reducers/userSlice";
 import { useQueryData } from "@/hooks/useQueryData";
 import { getCurrentUser } from "@/actions/auth/authAction";
 import { IUser } from "@/types/userTpes";
@@ -29,11 +29,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   );
 
   const user = userData?.data as IUser | null;
-  console.log(user, "userData");
+  // console.log(user, "userData");
   useEffect(() => {
     if (haveToken) {
       if (user) {
-        dispatch(setUserData(user));
+        dispatch(setCurrentUserData(user));
       }
       if (!user && isFetched) {
         toast({
