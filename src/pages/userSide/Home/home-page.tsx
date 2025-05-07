@@ -6,9 +6,9 @@ const Homepage = () => {
  
   return (
 
-  <>
+  <div className=" h-full overflow-y-scroll">
   <Home1 />
-  </>
+  </div>
 
   );
 };

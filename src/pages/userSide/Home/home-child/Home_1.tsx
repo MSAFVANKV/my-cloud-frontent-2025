@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { useMainContext } from "@/providers/context/context";
 import FolderPage from "../../folders/page";
+
 // import { useParams } from "react-router-dom";
 
 export default function Home1() {
@@ -65,7 +66,7 @@ export default function Home1() {
   ]);
 
   // Function to toggle star status
-  const toggleStar = (id) => {
+  const toggleStar = (id:string|number) => {
     setItems(
       items.map((item) =>
         item.id === id ? { ...item, starred: !item.starred } : item
@@ -114,7 +115,7 @@ export default function Home1() {
     "transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1";
 
   return (
-    <main className="flex-1 overflow-auto">
+    <main className="flex-1 overflow-auto space-y-3">
    
 
       {/* Files and folders grid/list */}
@@ -216,6 +217,7 @@ export default function Home1() {
           </table>
         </div>
       )}
+
 
       {/* uploaded files */}
       <div className="">

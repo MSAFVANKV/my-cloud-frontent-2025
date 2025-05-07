@@ -4,7 +4,7 @@ import "./index.css";
 import rootRouter from "./routes/Root-Router.tsx";
 import { RouterProvider } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { store } from "./redux/store.ts";
+import { store } from "./providers/redux/store.ts";
 import { Provider } from "react-redux";
 import ReactQueryProvider from "./providers/react-query/index.tsx";
 import { Toaster2 } from "./components/ui/toaster.tsx";

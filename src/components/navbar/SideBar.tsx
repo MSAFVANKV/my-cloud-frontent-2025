@@ -1,8 +1,8 @@
 import { useMainContext } from "@/providers/context/context";
 import { Clock, CloudRain, File, FolderPlus, Star } from "lucide-react";
-import AyButton from "../myUi/AyButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import UploadFiles from "../uploads/upload-files";
+import UploadFolders from "../uploads/upload-folders";
 
 const SideBar = () => {
   const { menuOpen } = useMainContext();
@@ -27,7 +27,7 @@ const SideBar = () => {
       id:3,
       title:"Recent",
       icon:<Clock className="h-5 w-5 mr-3" />,
-      url:"recent"
+      url:"/recent"
     },
     {
       id:4,
@@ -58,20 +58,7 @@ const SideBar = () => {
         {/* upload files here */}
         <UploadFiles />
       
-        <AyButton
-          title=""
-          variant="outlined"
-          outLineColor="black"
-          sx={{
-            // bgcolor:"#155dfc"
-            width: "100%",
-            borderRadius:"10px",
-            height:"40px"
-          }}
-        >
-         <FolderPlus className="h-4 w-4 mr-2" />
-          New Folder
-        </AyButton>
+      <UploadFolders />
         {/* === folder button === */}
      
       </div>

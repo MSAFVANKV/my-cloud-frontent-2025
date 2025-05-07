@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { isAuthenticated } from "./IsAuthenticated";
-import { useAppDispatch } from "@/redux/hook";
-import { setCurrentUserData } from "@/redux/reducers/userSlice";
+import { useAppDispatch } from "@/providers/redux/hook";
+import { setCurrentUserData } from "@/providers/redux/reducers/userSlice";
 import { useQueryData } from "@/hooks/useQueryData";
 import { getCurrentUser } from "@/actions/auth/authAction";
 import { IUser } from "@/types/userTpes";

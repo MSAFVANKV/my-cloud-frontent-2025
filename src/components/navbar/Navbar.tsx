@@ -1,5 +1,5 @@
 import { useMainContext } from "@/providers/context/context";
-import { useAppSelector } from "@/redux/hook";
+import { useAppSelector } from "@/providers/redux/hook";
 import { CloudRain, Menu, Search, Settings, X } from "lucide-react";
 import { useState } from "react";
 import Loader from "../global/loader";

@@ -202,7 +202,7 @@ const UploadFiles: React.FC = () => {
         <Formik
           initialValues={{ files: [] as File[], folderId: folderId ?? null }}
           onSubmit={async (values, { resetForm }) => {
-            console.log(values, "values");
+            // console.log(values, "values");
 
             try {
               const formData = new FormData();
@@ -220,7 +220,7 @@ const UploadFiles: React.FC = () => {
 
               }
             } catch (error:any) {
-              console.error("Error uploading files:", error);
+              console.error("Error uploading files:");
               if(error){
                 if(error.response.status === 503){
                     makeToastError(error.response.data.message);

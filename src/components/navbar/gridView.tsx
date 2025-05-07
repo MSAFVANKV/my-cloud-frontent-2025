@@ -7,11 +7,14 @@ const GridView = () => {
     const { folderId } = useParams<{ folderId: string }>();
 
     const { setViewMode, viewMode } = useMainContext();
+
+    const headerName = folderId &&folderId.replace(/-/g, " ");
   return (
     <div>
           <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-gray-800">
-          {folderId ? folderId : "Home"}
+        <h2 className="text-2xl capitalize font-bold text-gray-800">
+          {headerName ? headerName : "Home"}
+  
         </h2>
         <div className="flex items-center">
           <button

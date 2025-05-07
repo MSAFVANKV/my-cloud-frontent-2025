@@ -8,7 +8,7 @@ export const createNewUserAction = async (data: {
   password: string;
 }) => {
   try {
-    console.log(data, "===== data inside action create new user =====");
+    // console.log(data, "===== data inside action create new user =====");
 
     const { email, password, userName } = data;
 
@@ -24,7 +24,7 @@ export const createNewUserAction = async (data: {
       message: response.data.message,
     };
   } catch (error: any) {
-    console.error("❌ Authentication error:", error);
+    // console.error("❌ Authentication error:", error);
 
     return {
       status: error.response?.status || 500,
