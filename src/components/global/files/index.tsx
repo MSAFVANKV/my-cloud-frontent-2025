@@ -6,18 +6,22 @@ import { FileText, FileImage, FilePen } from "lucide-react"; // Icons for docume
 import ImageComponent from "@/components/global/image";
 import Loader from "@/components/global/loader";
 import { useMainContext } from "@/providers/context/context";
+import { decodeId } from "@/utils/encorder";
 
 
 
 function AllFiles() {
     const { folderId } = useParams<{ folderId: string }>();
     const { viewMode } = useMainContext();
+
+  const decodedFolderId =  folderId ? decodeId(folderId) : "";
+
   
     // console.log(folderId);
   
     const { data: fetchedFiles, isFetching } = useQueryData(["all-files",folderId], () =>
-      getAllFilesOfUser( folderId
-        ? [{ key: "folderId", value: folderId }]
+      getAllFilesOfUser( decodedFolderId
+        ? [{ key: "folderId", value: decodedFolderId }]
         : undefined)
     );
   

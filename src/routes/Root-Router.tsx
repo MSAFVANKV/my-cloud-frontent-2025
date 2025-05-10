@@ -19,8 +19,12 @@ const rootRouter = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/:folderId",
+        path: "/folder/:folderId",
         element: <FolderPage />,
+      },
+      {
+        path: "/folder/all",
+        element: <FolderPage showAll />,
       },
       {
         path: "/starred",

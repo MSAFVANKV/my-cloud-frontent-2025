@@ -19,6 +19,12 @@ const SideBar = () => {
     },
     {
       id:2,
+      title:"Folders",
+      icon:<Star className="h-5 w-5 mr-3" />,
+      url:"/folder/all"
+    },
+    {
+      id:2,
       title:"Starred",
       icon:<Star className="h-5 w-5 mr-3" />,
       url:"/starred"

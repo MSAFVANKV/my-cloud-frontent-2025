@@ -146,6 +146,7 @@ import { Label } from "../ui/label";
 import Loader from "../global/loader";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
+import { decodeId } from "@/utils/encorder";
 
 interface UploadType {
   id: number;
@@ -158,6 +159,9 @@ interface UploadType {
 const UploadFiles: React.FC = () => {
   const { folderId } = useParams<{ folderId: string }>();
   const queryClient = useQueryClient();
+
+  const decodedFolderId =  folderId ? decodeId(folderId) : "";
+
 
   const uploadTypes: UploadType[] = [
     {
@@ -200,7 +204,7 @@ const UploadFiles: React.FC = () => {
       >
         {/* Hidden File Input */}
         <Formik
-          initialValues={{ files: [] as File[], folderId: folderId ?? null }}
+          initialValues={{ files: [] as File[], folderId: decodedFolderId ?? null }}
           onSubmit={async (values, { resetForm }) => {
             // console.log(values, "values");
 
@@ -217,15 +221,15 @@ const UploadFiles: React.FC = () => {
                 resetForm();
                 makeToast(response.data.message);
                 queryClient.invalidateQueries({ queryKey: ["all-files"] });
-
               }
-            } catch (error:any) {
-              console.error("Error uploading files:");
-              if(error){
-                if(error.response.status === 503){
-                    makeToastError(error.response.data.message);
+            } catch (error: any) {
+              // console.error("Error uploading files:");
+              if (error) {
+                // console.log(error);
+
+                if (error) {
+                  makeToastError(error.response.data.message);
                 }
-              
               }
             }
           }}

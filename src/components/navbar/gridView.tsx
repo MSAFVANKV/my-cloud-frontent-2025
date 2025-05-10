@@ -1,19 +1,46 @@
 import { useMainContext } from "@/providers/context/context";
 import { Grid, List } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useLocation} from "react-router-dom";
 
 
 const GridView = () => {
-    const { folderId } = useParams<{ folderId: string }>();
+    // const { folderId } = useParams<{ folderId: string }>();
+    const {pathname} = useLocation()
 
     const { setViewMode, viewMode } = useMainContext();
 
-    const headerName = folderId &&folderId.replace(/-/g, " ");
+    // const headerName = folderId &&folderId.replace(/-/g, " ");
+    // const getFolderName = (id?: string) => {
+    //   if (!id) return "Home";
+    //   const parts = id.split("-");
+    //   return parts.length > 1 ? parts.slice(1).join(" ") : id;
+    // };
+    
+    // const headerName = getFolderName(folderId);
+    const getPageTitle = (path: string) => {
+      if (path === "/") return "Home";
+    
+      const segments = path.split("/").filter(Boolean);
+      const lastSegment = segments[segments.length - 2];
+    
+      // Handle slugs like "id-Name-Here"
+      if (lastSegment.includes("-")) {
+        const nameParts = lastSegment.split("-").slice(1);
+        return nameParts.join(" ");
+      }
+    
+      return lastSegment;
+    };
+    
+    const title = getPageTitle(pathname);
+    
+    
   return (
     <div>
           <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl capitalize font-bold text-gray-800">
-          {headerName ? headerName : "Home"}
+          {/* {headerName ? headerName : "Home"} */}
+          {title}
   
         </h2>
         <div className="flex items-center">

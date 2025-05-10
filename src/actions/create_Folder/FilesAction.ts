@@ -60,3 +60,26 @@ export const getFoldersWithSub = async (filters?: { key: string; value: string }
     return { status: 500, message: "Oppse something went wrong", data:[] };
   }
 };
+
+
+// rename 
+
+export const renameFolders = async (folderId: string, name: string) => {
+  try {
+    // const response = await getFolders_Api(filters);
+
+    // // console.log(response,'response get folder');
+    
+
+    // if (response.status === 200) {
+    //   return {
+    //     status: response.status,
+    //     message: response.data.message,
+    //     data: response.data.data,
+    //   };
+    // }
+  } catch {
+    // console.log(error,"error in get folders======");
+    return { status: 500, message: "Oppse something went wrong", data:[] };
+  }
+};

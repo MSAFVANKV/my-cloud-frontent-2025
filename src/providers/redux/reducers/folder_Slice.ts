@@ -1,16 +1,16 @@
 import { IFiles } from "@/types/filesTypes";
 import { IFolderTypes } from "@/types/folder-types";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type FormData = {
+type initialStateProps = {
   folders: IFolderTypes[];
   files: IFiles[];
   isLoading: boolean;
   error: string | null;
 };
 
-const initialState: FormData = {
+const initialState: initialStateProps = {
   folders: [],
   files: [],
   isLoading: false,
@@ -18,16 +18,19 @@ const initialState: FormData = {
 };
 
 const folderSlice = createSlice({
-  name: "auth",
+  name: "folder",
   initialState,
   reducers: {
     setFolderData: (state, action) => {
       state.folders = action.payload;
       state.isLoading = true;
     },
+    FOLDERS: (_state, action: PayloadAction<initialStateProps>) => {
+      return { ...action.payload }
+    },
   },
 });
 
-export const { setFolderData } = folderSlice.actions;
+export const { setFolderData , FOLDERS} = folderSlice.actions;
 
 export default folderSlice.reducer;
