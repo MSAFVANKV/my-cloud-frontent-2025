@@ -5,11 +5,15 @@ import CreateFolders from "../global/create-folders";
 import { Input } from "../ui/input";
 import { useState } from "react";
 import { useParams } from "react-router-dom";
+import { decodeId } from "@/utils/encorder";
 
 const UploadFolders = () => {
   const [folderName, setFolderName] = useState("Unknown-name");
 
   const { folderId } = useParams<{ folderId: string }>();
+
+  const decodedFolderId = folderId ? decodeId(folderId) : "";
+
 
   return (
     <div>
@@ -41,7 +45,7 @@ const UploadFolders = () => {
           />
         </div>
 
-        <CreateFolders name={folderName} parentId={folderId ?? ""} />
+        <CreateFolders name={folderName} parentId={decodedFolderId ?? ""} />
       </Modal>
     </div>
   );

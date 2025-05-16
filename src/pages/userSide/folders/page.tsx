@@ -28,7 +28,8 @@ const FolderPage = ({ showAll }: Props) => {
       !showAll && pathname !== "/"
         ? [{ key: "parentId", value: decodedFolderId }]
         : [{ key: "", value: "" }]
-    )
+    ),
+    {disableRefetch:true}
   );
 
   const { data: folders } = (fetchedData ?? {}) as {

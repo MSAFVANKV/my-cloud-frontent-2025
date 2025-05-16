@@ -18,6 +18,13 @@ export const create_New_Folder = (name: string, parentId?: string) =>
     { withCredentials: true }
   );
 
+  export const rename_Folder = (name: string, folderId: string) =>
+    API.put(
+      `${CREATE_NEW_FOLDER_URL}/${folderId}`,
+      { name: name },
+      { withCredentials: true }
+    );
+
 
   export const getFolders_Api = (filters?: { key: string; value: string }[]) => {
     const params: Record<string, string> = {};

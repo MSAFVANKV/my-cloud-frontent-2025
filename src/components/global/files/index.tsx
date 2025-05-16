@@ -3,10 +3,10 @@ import { useQueryData } from "@/hooks/useQueryData";
 import { IFiles } from "@/types/filesTypes";
 import { useParams } from "react-router-dom";
 import { FileText, FileImage, FilePen } from "lucide-react"; // Icons for documents
-import ImageComponent from "@/components/global/image";
 import Loader from "@/components/global/loader";
 import { useMainContext } from "@/providers/context/context";
 import { decodeId } from "@/utils/encorder";
+import FileModal from "./file_modal";
 
 
 
@@ -22,7 +22,8 @@ function AllFiles() {
     const { data: fetchedFiles, isFetching } = useQueryData(["all-files",folderId], () =>
       getAllFilesOfUser( decodedFolderId
         ? [{ key: "folderId", value: decodedFolderId }]
-        : undefined)
+        : undefined),
+        {disableRefetch:true}
     );
   
     const { data: files = [] } = (fetchedFiles ?? {}) as {
@@ -51,18 +52,14 @@ function AllFiles() {
             <div
               key={file._id}
               className={`bg-white p-3 shadow-md rounded-lg flex ${
-                viewMode === "list" ? "flex-row" : "flex-col"
-              }  items-center`}
+                viewMode === "list" ? "flex-row gap-4 items-start js" : "flex-col"
+              }  items-center border`}
             >
               {/* Show image preview */}
               {file.format.startsWith("image") ? (
-                <ImageComponent
-                  src={file.src} // Ensure this contains the image URL
-                  alt={file.name}
-                  className={` flex ${
-                    viewMode === "list" ? "w-14 h-14" : "w-full h-36 "
-                  } items-center justify-center overflow-hidden`}
-                  classNameImg="object-cover w-full h-full rounded-md"
+                <FileModal 
+                file={file}
+                viewMode={viewMode}
                 />
               ) : (
                 //   <div className="w-full h-40 flex items-center justify-center overflow-hidden">
@@ -83,7 +80,7 @@ function AllFiles() {
               )}
 
               {/* File details */}
-              <div className="text-center mt-2">
+              <div className={` ${ viewMode === "list" ? "":"text-center mt-2"}  `}>
                 <h3 className="text-sm font-medium">{file.name}</h3>
                 <p className="text-xs text-gray-500">{file.format}</p>
                 <p className="text-xs text-gray-400">

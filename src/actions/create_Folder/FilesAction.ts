@@ -2,6 +2,7 @@ import {
   create_New_Folder,
   Get_All_Files,
   getFolders_Api,
+  rename_Folder,
 } from "@/services/upload/route";
 
 export const getAllFilesOfUser = async (
@@ -66,20 +67,20 @@ export const getFoldersWithSub = async (filters?: { key: string; value: string }
 
 export const renameFolders = async (folderId: string, name: string) => {
   try {
-    // const response = await getFolders_Api(filters);
+    const response = await rename_Folder(name,folderId);
 
-    // // console.log(response,'response get folder');
+    // console.log(response,'response get folder');
     
 
-    // if (response.status === 200) {
-    //   return {
-    //     status: response.status,
-    //     message: response.data.message,
-    //     data: response.data.data,
-    //   };
-    // }
-  } catch {
-    // console.log(error,"error in get folders======");
+    if (response.status === 200) {
+      return {
+        status: response.status,
+        message: response.data.message,
+        data: response.data.data,
+      };
+    }
+  } catch(error) {
+    console.log(error,"error in get folders======");
     return { status: 500, message: "Oppse something went wrong", data:[] };
   }
 };

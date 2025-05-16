@@ -20,16 +20,30 @@
 // }
 import { QueryFunction, QueryKey, useQuery } from "@tanstack/react-query";
 
+type UseQueryDataOptions = {
+  enabled?: boolean;
+  disableRefetch?: boolean;
+};
+
 export const useQueryData = <T>(
   queryKey: QueryKey,
   queryFn: QueryFunction<T>,
-  enabled: boolean = true
+  options?: UseQueryDataOptions
 ) => {
+  const { enabled = true, disableRefetch = false } = options ?? {};
+
   const { data, isPending, isFetched, refetch, isFetching } = useQuery<T>({
     queryKey,
     queryFn,
     enabled,
+    refetchOnWindowFocus: !disableRefetch, // ✅ uses your custom flag
   });
 
-  return { data, isPending, isFetched, refetch, isFetching };
+  return {
+    data,
+    isPending,
+    isFetched,
+    refetch,
+    isFetching,
+  };
 };

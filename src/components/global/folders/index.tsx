@@ -1,98 +1,87 @@
-import {  renameFolders } from "@/actions/create_Folder/FilesAction";
+import { renameFolders } from "@/actions/create_Folder/FilesAction";
 import { useMainContext } from "@/providers/context/context";
 import { IFolderTypes } from "@/types/folder-types";
 import { FolderIcon } from "lucide-react";
 
-import {  useNavigate } from "react-router-dom";
-import { useMemo, useRef, useState } from "react";
-import {  encodeId } from "@/utils/encorder";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { encodeId } from "@/utils/encorder";
 import BreadcrumbLine from "../bread-crumbs";
 import { Input } from "@/components/ui/input";
 import { useMutationData, useMutationDataState } from "@/hooks/useMutationData";
+import {
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
 
 type Props = {
   showAll?: boolean;
-  folders:IFolderTypes[]
-  folderId:string
+  folders: IFolderTypes[];
+  folderId: string;
 };
 
 function Folders({ folders, folderId }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const { viewMode } = useMainContext();
   const [onRename, setOnRename] = useState(false);
-  // console.log('Clicked folder ID:', folderId);
+  const [renameFolderId, setRenameFolderId] = useState<string | null>(null);
 
-  const Rename = () => setOnRename(true);
-  const Renamed = () => setOnRename(false);
+  const Rename = (folderId: string) => {
+    setRenameFolderId(folderId);  // Set folderId to trigger renaming
+    setOnRename(true);  // Trigger renaming state
+  };
+  const Renamed = () => setOnRename(false); // Reset renaming state after completion
 
-
-
-  const { mutate, isPending } = useMutationData(
-    ['rename-folders'],
-    (data: { name: string }) => renameFolders(folderId, data.name),
-    'workspace-folders',
+  const { mutate } = useMutationData(
+    ["rename-folders"],
+    (data: { name: string; id: string }) => renameFolders(data.id, data.name),
+    "workspace-folders",
     Renamed
-  )
+  );
 
   const { latestVariables } = useMutationDataState(["rename-folders"]);
-
 
   const folderName = useMemo(() => {
     return folders?.find((f) => f._id === folderId);
   }, [folderId, folders]);
 
-  // console.log(folders,'folders');
-
   const handleFolderClick = (clickedFolderId: string) => {
-    if (onRename) return;
-
-    // console.log('Clicked folder ID:', clickedFolderId);  // Add this line to check the ID
-
+    if (onRename) return; // If onRename is true, don't navigate
     const encodeFolderId = encodeId(clickedFolderId);
-    // console.log('Encoded folder ID:', encodeFolderId); // Check if encoding works
-
     navigate(`/folder/${encodeFolderId}`);
   };
 
-  const handleNameDoubleClick = (e: React.MouseEvent<HTMLParagraphElement>) => {
-    e.stopPropagation();
-    Rename();
-    //Rename functionality
-  };
-
-  const updateFolderName = (e: React.FocusEvent<HTMLInputElement>) => {
+  const updateFolderName = (e: React.FocusEvent<HTMLInputElement>, id: string) => {
     if (inputRef.current) {
       if (inputRef.current.value) {
-        mutate({ name: inputRef.current.value, folderId });
-      } else Renamed();
+        mutate({ name: inputRef.current.value, id }); // Call rename mutation
+      } else {
+        Renamed(); // If input is empty, cancel renaming
+      }
     }
   };
 
-
-
-  // if (!folders || folders?.length === 0) {
-  //   return <div className="h-32 w-full flex justify-center items-center">
-  //     <span className="text-xs capitalize">
-  //       No Items
-  //     </span>
-  //   </div>;
-  // }
-
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        Renamed(); // Reset renaming state if clicked outside
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+  
 
   return (
-    <div className="">
-   {onRename ?"true":"false"}
-
-      {/* <div>
-        <h2>Folders </h2>
-        <pre>{JSON.stringify(folders, null, 2)}</pre>
-      </div> */}
-      {/* {pathname} */}
-      <div className="">
-        <BreadcrumbLine folderId={folderId} />
-      </div>
+    <div ref={containerRef}>
+      <BreadcrumbLine folderId={folderId} />
       <h2 className="text-xl font-semibold">{folderName?.name}</h2>
 
       {viewMode === "grid" ? (
@@ -100,46 +89,50 @@ function Folders({ folders, folderId }: Props) {
           {folders
             .filter((f) => f._id !== folderId)
             .map((folder) => (
-              <div
-                onClick={() => handleFolderClick(folder._id)}
-                key={folder._id}
-                className="border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition"
-              >
-                <FolderIcon className="text-yellow-500 mb-2" />
-                {onRename ? (
-                  <Input
-                    onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
-                      updateFolderName(e);
-                    }}
-                    autoFocus
-                    placeholder={folder.name}
-                    className="border-none text-base w-full outline-none text-neutral-300 bg-transparent p-0"
-                    ref={inputRef}
-                  />
-                ) : (
-                  <p
-                    onClick={(e) => e.stopPropagation()}
-                    className="text-neutral-300"
-                    onDoubleClick={handleNameDoubleClick}
-                  >
-                    {latestVariables &&
-                    latestVariables.status === "pending" &&
-                    latestVariables.variables.id === folderId
-                      ? latestVariables.variables.name
-                      : folder.name}
-                  </p>
-                )}
-                <div className="text-xs text-gray-500 mt-1">
-                  {new Date(folder.createdAt).toLocaleDateString()}
-                </div>
-              </div>
+              <ContextMenu key={folder._id}>
+                <ContextMenuTrigger
+                  onClick={() => handleFolderClick(folder._id)}
+                  className="border rounded-lg p-4 bg-white shadow-sm hover:shadow-md transition"
+                >
+                  <FolderIcon className="text-yellow-500 mb-2" />
+                  {onRename && renameFolderId === folder._id ? (
+                    <Input
+                      onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                        updateFolderName(e, folder._id);
+                      }}
+                      autoFocus
+                      placeholder={folder.name}
+                      className="border text-base w-full outline-none text-neutral-300  p-1 bg-gray-100"
+                      ref={inputRef}
+                    />
+                  ) : (
+                    <p className="text-neutral-300 cursor-pointer py-0">
+                      {latestVariables &&
+                      latestVariables.status === "pending" &&
+                      latestVariables.variables.id === folderId
+                        ? latestVariables.variables.name
+                        : folder.name}
+                    </p>
+                  )}
+                  <div className="text-xs text-gray-500 mt-1">
+                    {new Date(folder.createdAt).toLocaleDateString()}
+                  </div>
+                </ContextMenuTrigger>
+
+                <ContextMenuContent className="w-[150px]">
+                  <ContextMenuItem onClick={() => Rename(folder._id)}>Rename</ContextMenuItem>
+                  <ContextMenuItem onClick={() => Rename(folder._id)}>Delete</ContextMenuItem>
+
+                  {/* You can add more items here */}
+                </ContextMenuContent>
+              </ContextMenu>
             ))}
         </div>
       ) : (
         <div className="space-y-2">
           {folders
             .filter((f) => f._id !== folderId)
-            .map((folder: any) => (
+            .map((folder) => (
               <div
                 key={folder._id}
                 onClick={() => handleFolderClick(folder._id)}

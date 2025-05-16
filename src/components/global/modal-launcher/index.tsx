@@ -15,7 +15,7 @@ import {
     children?: React.ReactNode;
     title: string;
     description?: string;
-    classname?: string;
+    className?: string;
     footer?: React.ReactNode;
     open?: boolean;
     setOpen?(value: boolean): void;
@@ -25,19 +25,19 @@ import {
     children,
     trigger,
     title,
-    classname,
+    className,
     description,
     footer,
     open,
     setOpen,
   }: Props) => {
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger className={classname} asChild>
+      <Dialog open={open} onOpenChange={setOpen}  >
+        <DialogTrigger asChild>
           {trigger}
         </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
+        <DialogContent  className={className}>
+          <DialogHeader className="w-full ">
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
