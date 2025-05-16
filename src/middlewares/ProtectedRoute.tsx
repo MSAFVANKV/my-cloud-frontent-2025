@@ -25,7 +25,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   } = useQueryData<GetCurrentUserResponse>(
     ["user-details"],
     getCurrentUser,
-    haveToken
+    {enabled:haveToken}
   );
 
   const user = userData?.data as IUser | null;

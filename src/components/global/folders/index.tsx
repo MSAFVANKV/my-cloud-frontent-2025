@@ -56,7 +56,7 @@ function Folders({ folders, folderId }: Props) {
     navigate(`/folder/${encodeFolderId}`);
   };
 
-  const updateFolderName = (e: React.FocusEvent<HTMLInputElement>, id: string) => {
+  const updateFolderName = (_: React.FocusEvent<HTMLInputElement>, id: string) => {
     if (inputRef.current) {
       if (inputRef.current.value) {
         mutate({ name: inputRef.current.value, id }); // Call rename mutation

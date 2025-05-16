@@ -1,8 +1,6 @@
-import React from 'react'
 
-type Props = {}
 
-function Dummy({}: Props) {
+function Dummy() {
   return (
     <div className='flex items-center justify-center h-screen'>
         <form action="" className='flex flex-col border p-10'>

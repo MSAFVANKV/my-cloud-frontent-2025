@@ -147,6 +147,7 @@ import Loader from "../global/loader";
 import { useParams } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
 import { decodeId } from "@/utils/encorder";
+import { JSX } from "react";
 
 interface UploadType {
   id: number;
