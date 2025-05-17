@@ -1,58 +1,93 @@
-import {
-  userAuthSchema,
-  userLoginAuthSchema,
-} from "@/pages/userSide/auth/schema";
+// import {
+//   userAuthSchema,
+//   // userLoginAuthSchema,
+// } from "@/pages/userSide/auth/schema";
 import { useMutationData } from "./useMutationData";
-import useZodForm from "./useZodForm";
+// import useZodForm from "./useZodForm";
 import {
   createNewUserAction,
   loginUserAction,
 } from "@/actions/auth/authAction";
 
-export const useCreateUser = () => {
-  // const [haveError, setHaveError] = useState(false)
+// export const useCreateUser = () => {
+//   // const [haveError, setHaveError] = useState(false)
 
+//   const { mutate, isPending } = useMutationData(
+//     ["create-user"],
+//     (data: { email: string; userName: string; password: string }) =>
+//       createNewUserAction(data),
+//     "new-user",
+//     (data) => {
+//       if (data.status === 200 || data.status === 201) {
+//         reset();
+//       }
+//       //
+//     }
+//   );
+
+//   const { errors, onFormSubmit, register, reset, setValue } = useZodForm(
+//     userAuthSchema,
+//     mutate
+//   );
+
+//   return { errors, onFormSubmit, register, isPending, reset, setValue };
+// };
+export const useCreateUser = () => {
   const { mutate, isPending } = useMutationData(
     ["create-user"],
-    (data: { email: string; userName: string; password: string }) =>
-      createNewUserAction(data),
-    "new-user",
-    (data) => {
-      if (data.status === 200 || data.status === 201) {
-        reset();
-      }
-      //
-    }
+    (data: { email: string; userName: string; password: string }) => createNewUserAction(data),
+    "new-user"
   );
 
-  const { errors, onFormSubmit, register, reset, setValue } = useZodForm(
-    userAuthSchema,
-    mutate
-  );
+  const createUser = (data: { email: string; userName: string; password: string }, options?: any) => {
+    mutate(data, options);
+  };
 
-  return { errors, onFormSubmit, register, isPending, reset, setValue };
+  return { createUser, isPending };
 };
 
 //  login
-export const useLoginUser = () => {
-  // const [haveError, setHaveError] = useState(false)
+// export const useLoginUser = () => {
+//   // const [haveError, setHaveError] = useState(false)
 
+//   const { mutate, isPending } = useMutationData(
+//     ["login-user"],
+//     (data: { email: string; password: string }) => loginUserAction(data),
+//     "user-data",
+//     (data) => {
+//       if (data.status === 200 || data.status === 201) {
+//         reset();
+//       }
+//       //
+//     }
+//   );
+
+//   const { errors, onFormSubmit, register, reset, setValue } = useZodForm(
+//     userLoginAuthSchema,
+//     mutate
+//   );
+
+//   return { errors, onFormSubmit, register, isPending, reset, setValue };
+// };
+export const useLoginUser = () => {
   const { mutate, isPending } = useMutationData(
     ["login-user"],
+
+    // Mutation function: loginUserAction expects { email, password }
     (data: { email: string; password: string }) => loginUserAction(data),
     "user-data",
     (data) => {
       if (data.status === 200 || data.status === 201) {
-        reset();
+        // console.log("Login successful:", data);
+        // Optionally handle redirect or set session here
       }
-      //
     }
   );
 
-  const { errors, onFormSubmit, register, reset, setValue } = useZodForm(
-    userLoginAuthSchema,
-    mutate
-  );
+  // Return function that receives email/password
+  const loginUser = (values: { email: string; password: string }) => {
+    mutate(values);
+  };
 
-  return { errors, onFormSubmit, register, isPending, reset, setValue };
+  return { loginUser, isPending };
 };

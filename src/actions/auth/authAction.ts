@@ -1,6 +1,9 @@
+import {
+  get_Current_User_Api,
+  login_User_Api,
+  register_User_Api,
+} from "@/services/api/route";
 import { GetCurrentUserResponse } from "@/types/globalType";
-import { GET_CURRENT_USER, LOGIN_USER, REGISTER_USER } from "@/utils/urlPath";
-import axios from "axios";
 
 export const createNewUserAction = async (data: {
   email: string;
@@ -10,13 +13,7 @@ export const createNewUserAction = async (data: {
   try {
     // console.log(data, "===== data inside action create new user =====");
 
-    const { email, password, userName } = data;
-
-    const response = await axios.post(REGISTER_USER, {
-      email,
-      password,
-      userName,
-    });
+    const response = await register_User_Api(data);
 
     return {
       status: response.status,
@@ -41,18 +38,11 @@ export const loginUserAction = async (data: {
   password: string;
 }) => {
   try {
-    console.log(data, "===== data inside action create new user =====");
+    console.log("===== data inside action create new user =====");
 
-    const { email, password } = data;
+    // const { email, password } = data;
 
-    const response = await axios.post(
-      LOGIN_USER,
-      {
-        email,
-        password,
-      },
-      { withCredentials: true }
-    );
+    const response = await login_User_Api(data);
 
     return {
       status: response.status,
@@ -64,7 +54,7 @@ export const loginUserAction = async (data: {
 
     return {
       status: error.response?.status || 500,
-      data: null,
+      data: [],
       message: error.response?.data?.message || "Something went wrong!",
     };
   }
@@ -72,9 +62,7 @@ export const loginUserAction = async (data: {
 
 export const getCurrentUser = async (): Promise<GetCurrentUserResponse> => {
   try {
-    const response = await axios.get(GET_CURRENT_USER, {
-      withCredentials: true,
-    });
+    const response = await get_Current_User_Api();
 
     return {
       status: response.status,
