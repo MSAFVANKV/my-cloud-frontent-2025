@@ -38,7 +38,7 @@ export const loginUserAction = async (data: {
   password: string;
 }) => {
   try {
-    console.log("===== data inside action create new user =====");
+    // console.log("===== data inside action create new user =====");
 
     // const { email, password } = data;
 
@@ -47,6 +47,7 @@ export const loginUserAction = async (data: {
     return {
       status: response.status,
       data: response.data.user,
+      token: response.data.token,
       message: response.data.message,
     };
   } catch (error: any) {

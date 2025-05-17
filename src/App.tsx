@@ -10,7 +10,7 @@ function App() {
       <Navbar />
       <div className="flex flex-1 overflow-hidden h-full">
         <SideBar />
-       <div className="flex flex-col w-full p-10">
+       <div className="flex flex-col w-full md:p-10 p-3">
        <GridView />
        <Outlet />
        </div>
