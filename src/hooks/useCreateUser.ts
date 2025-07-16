@@ -2,7 +2,7 @@
 //   userAuthSchema,
 //   // userLoginAuthSchema,
 // } from "@/pages/userSide/auth/schema";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 import { useMutationData } from "./useMutationData";
 // import useZodForm from "./useZodForm";
 import {
@@ -80,7 +80,7 @@ export const useLoginUser = () => {
     (data) => {
       if (data.status === 200 || data.status === 201) {
         console.log("Login successful:", data);
-        // Cookies.set("token", data.token); // Set token in cookies
+        Cookies.set("cld_ath", data.token); // Set token in cookies
         // Optionally handle redirect or set session here
       }
     }
