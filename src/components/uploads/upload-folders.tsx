@@ -14,7 +14,6 @@ const UploadFolders = () => {
 
   const decodedFolderId = folderId ? decodeId(folderId) : "";
 
-
   return (
     <div>
       <Modal
