@@ -1,14 +1,25 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Signup from './Signup';
 import Login from './Login';
+import { isAuthenticated } from '@/middlewares/IsAuthenticated';
+import { useNavigate } from 'react-router-dom';
 
 const AnimatedLoginRegister = () => {
   const [isLoginActive, setIsLoginActive] = useState(true);
+  const haveToken = isAuthenticated();
+  const navigate = useNavigate();
+
 
   const toggleForm = () => {
     setIsLoginActive(!isLoginActive);
   };
+
+  useEffect(()=>{
+    if (haveToken) {
+      navigate(-1);
+    }
+  },[haveToken, navigate]);
 
   // Animation variants
   const formVariants = {

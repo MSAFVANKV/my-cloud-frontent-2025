@@ -1,5 +1,6 @@
 import App from "@/App";
 import ProtectedRoute from "@/middlewares/ProtectedRoute";
+import AnimatedLoginRegister from "@/pages/userSide/auth/Registeration-page";
 import FolderPage from "@/pages/userSide/folders/page";
 import HomePage from "@/pages/userSide/Home/home-page";
 import StarredPage from "@/pages/userSide/starred/page";
@@ -18,6 +19,7 @@ const rootRouter = createBrowserRouter([
         path: "/",
         element: <HomePage />,
       },
+  
       {
         path: "/folder/:folderId",
         element: <FolderPage />,
@@ -31,6 +33,14 @@ const rootRouter = createBrowserRouter([
         element: <StarredPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    element: (
+      <>
+        <AnimatedLoginRegister />
+      </>
+    ),
   },
 ]);
 

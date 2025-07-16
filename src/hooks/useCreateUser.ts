@@ -2,13 +2,14 @@
 //   userAuthSchema,
 //   // userLoginAuthSchema,
 // } from "@/pages/userSide/auth/schema";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 import { useMutationData } from "./useMutationData";
 // import useZodForm from "./useZodForm";
 import {
   createNewUserAction,
   loginUserAction,
 } from "@/actions/auth/authAction";
+import { useNavigate } from "react-router-dom";
 
 // export const useCreateUser = () => {
 //   // const [haveError, setHaveError] = useState(false)
@@ -75,6 +76,7 @@ export const useCreateUser = () => {
 //   return { errors, onFormSubmit, register, isPending, reset, setValue };
 // };
 export const useLoginUser = () => {
+  const navigate = useNavigate();
   const { mutate, isPending } = useMutationData(
     ["login-user"],
 
@@ -84,11 +86,13 @@ export const useLoginUser = () => {
     (data) => {
       if (data.status === 200 || data.status === 201) {
         console.log("Login successful:", data);
-        Cookies.set("cld_ath", data.token, {
-          expires: 30,
-          sameSite: "Strict",
-          path: "/",
-        }); // Set token in cookies
+        navigate('/')
+        // Cookies.set("cld_ath", data.token, {
+        //   expires: 30,
+        //   sameSite: "Strict",
+        //   path: "/",
+
+        // }); // Set token in cookies
         // Optionally handle redirect or set session here
       }
     }
