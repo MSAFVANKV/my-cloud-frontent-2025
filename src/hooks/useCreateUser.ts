@@ -36,11 +36,15 @@ import {
 export const useCreateUser = () => {
   const { mutate, isPending } = useMutationData(
     ["create-user"],
-    (data: { email: string; userName: string; password: string }) => createNewUserAction(data),
+    (data: { email: string; userName: string; password: string }) =>
+      createNewUserAction(data),
     "new-user"
   );
 
-  const createUser = (data: { email: string; userName: string; password: string }, options?: any) => {
+  const createUser = (
+    data: { email: string; userName: string; password: string },
+    options?: any
+  ) => {
     mutate(data, options);
   };
 
@@ -80,7 +84,11 @@ export const useLoginUser = () => {
     (data) => {
       if (data.status === 200 || data.status === 201) {
         console.log("Login successful:", data);
-        Cookies.set("cld_ath", data.token); // Set token in cookies
+        Cookies.set("cld_ath", data.token, {
+          expires: 30,
+          sameSite: "Strict",
+          path: "/",
+        }); // Set token in cookies
         // Optionally handle redirect or set session here
       }
     }
